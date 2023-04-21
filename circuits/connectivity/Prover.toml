@@ -1,0 +1,8 @@
+
+# valid proof example (sums to 15)
+x = "4"
+y = "11"
+
+# invalid proof example
+# x = "11"
+# y = "69"
