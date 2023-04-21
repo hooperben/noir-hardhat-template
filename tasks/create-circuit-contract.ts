@@ -5,7 +5,7 @@ import path from "path";
 
 import { execSync } from "child_process";
 
-task("create-contract")
+task("create-circuit-contract")
   .addParam("circuit", "The name of the circuit to create a contract for")
   .setAction(async (taskArgs, hre) => {
     await generateCircuit(taskArgs, hre);
@@ -17,8 +17,6 @@ const generateCircuit = async (taskArgs: any, hre: any) => {
   if (!circuit) throw new Error("Need a circuit name!");
 
   const circuitsDir = path.join(__dirname, `../circuits/${circuit}`);
-
-  console.log(circuitsDir);
 
   if (!fs.existsSync(circuitsDir))
     throw new Error("Somethings gone wrong with the directory");

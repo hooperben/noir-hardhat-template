@@ -9,7 +9,7 @@ import "solidity-coverage";
 import "hardhat-deploy";
 
 /// TASKS
-import "./tasks/create-contract";
+import "./tasks/create-circuit-contract";
 
 dotenv.config();
 
