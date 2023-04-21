@@ -51,7 +51,15 @@ And you're ready to test this circuit in hardhat.
 
 (I think) It's more efficient to evaluate your proofs firstly using wasm/ts tests first - but once you've done that it's time to turn your circuit into a contract.
 
-You can do this using noir by doing the following (using our example `myCircuit` from above):
+You can use this repo's `create-contract` hardhat task to this for you, and rename it to a more specific contract name (e.g. `myCircuitVerifier.sol`) to allow for nicer deployment scripts. To use this task with our above example (our `myCircuit` circuit), you'd run:
+
+```
+npx hardhat create-contract --circuit myCircuit
+```
+
+This will generate your Circuit contract file for you using nargo - but move it into your `contracts/` directory and rename it to be your circuit name + `Verifier.sol` (e.g. `myCircuitVerifier.sol`), as well as rename the actual contract from `TurboVerifier` (nargo default) to `MyCircuit`.
+
+Alternatively - you can do this using noir by doing the following (using our example `myCircuit` from above):
 
 ```
 cd circuits/myCircuit
@@ -59,11 +67,3 @@ nargo codegen-verifier
 ```
 
 This will create a `plonk_vk.sol` file at `circuits/myCircuit/contracts/` which you can then use in your hardhat project.
-
-Alternatively - you can use this repo's `create-contract` hardhat task to this for you, and rename it to a more specific contract name (e.g. `myCircuitVerifier.sol`) to allow for nicer deployment scripts:
-
-```
-npx hardhat create-contract --circuit myCircuit
-```
-
-This will generate your Circuit contract file for you using nargo - but move it into your `contracts/` directory and rename it to be your circuit name + `Verifier.sol` (e.g. `myCircuitVerifier.sol`), as well as rename the actual contract from `TurboVerifier` (nargo default) to `MyCircuit`.
