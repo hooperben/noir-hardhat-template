@@ -1,6 +1,10 @@
 # Hardhat Noir Template Repository
 
-This repository is an example of how you can begin to use Noir circuits in hardhat.
+A hardhat template repository for developing noir (zk) circuits.
+
+## Getting started
+
+Click the `Use this template` button at the top of this repository to create a new repository from this template.
 
 ## Installation
 
