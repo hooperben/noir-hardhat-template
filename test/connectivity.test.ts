@@ -1,4 +1,4 @@
-/* eslint-disable camelcase */
+/* eslint-disable camelcase -- few factories and libaries that use camel case */
 import { expect } from "chai";
 import returnCircuitTestingAPI from "../utils/returnCircuitTestingAPI";
 import {
@@ -122,5 +122,26 @@ describe("Connectivity Testing", async () => {
       proofExists = await connectivityContract.isProofUsed(keccakProof);
       expect(proofExists).equal(true);
     });
+
+    // generate our proof
+    const proof = (await create_proof(prover, acir, input)) as Buffer;
+
+    // verify it locally (in wasm)
+    const verified = await verify_proof(verifier, proof);
+    expect(verified).equal(true);
+
+    // need a keccak of the proof to submit it to the contract
+    const keccakProof = ethers.utils.keccak256(proof);
+
+    // proof should not exists on the contract
+    let proofExists = await connectivityContract.isProofUsed(keccakProof);
+    expect(proofExists).equal(true);
+
+    // should go throw (not revert)
+    try {
+      await connectivityContract.submitProof(proof);
+    } catch (err) {
+      expect(err.message).to.include("proof already used");
+    }
   });
 });
