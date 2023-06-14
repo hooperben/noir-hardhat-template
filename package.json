@@ -1,6 +1,9 @@
 {
   "name": "hardhat-noir-template",
   "author": "benhooper.eth",
+  "private": true,
+  "version": "0.1.0",
+  "description": "A template for building Noir contracts with Hardhat",
   "devDependencies": {
     "@nomiclabs/hardhat-ethers": "npm:hardhat-deploy-ethers",
     "@nomiclabs/hardhat-etherscan": "^3.1.7",
@@ -41,8 +44,8 @@
     "node": ">=10.6.0"
   },
   "dependencies": {
-    "@noir-lang/aztec_backend": "^0.11.0",
-    "@noir-lang/barretenberg": "^2.19.0",
-    "@noir-lang/noir_wasm": "^0.10.0"
+    "@noir-lang/aztec_backend": "0.11.0",
+    "@noir-lang/barretenberg": "2.19.0",
+    "@noir-lang/noir_wasm": "0.10.0"
   }
 }
