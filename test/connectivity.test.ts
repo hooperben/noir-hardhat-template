@@ -72,7 +72,8 @@ describe("Connectivity Testing", async () => {
         const proof = await create_proof(prover, acir, inputs);
         const verified = await verify_proof(verifier, proof);
         expect(verified).equal(false);
-      } catch (err) {
+        // sorry for the any 🤮
+      } catch (err: any) {
         expect(err.name).to.include("RuntimeError");
       }
     });
@@ -88,19 +89,23 @@ describe("Connectivity Testing", async () => {
         const proof = await create_proof(prover, acir, inputs);
         const verified = await verify_proof(verifier, proof);
         expect(verified).equal(false);
-      } catch (err) {
+
+        // sorry for the any 🤮
+      } catch (err: any) {
         expect(err.name).to.include("RuntimeError");
       }
     });
   });
 
   describe("testing our proofs with verifier contracts", async () => {
-    it("the smart contract should accept a valid proof", async () => {
-      const input = {
-        x: 4,
-        y: 11,
-      };
+    const input = {
+      x: 4, // private (by default)
+      y: 11, // public (explicitly defined)
+    };
 
+    const publicInputs = [ethers.utils.hexZeroPad(input.y.toString(), 32)];
+
+    it("the smart contract should accept a valid proof", async () => {
       // generate our proof
       const proof = (await create_proof(prover, acir, input)) as Buffer;
 
@@ -115,8 +120,10 @@ describe("Connectivity Testing", async () => {
       let proofExists = await connectivityContract.isProofUsed(keccakProof);
       expect(proofExists).equal(false);
 
+      // we also have to submit the public inputs to the contract as a bytes32[]
+      // y is our only public input in this example
       // should go throw (not revert)
-      await connectivityContract.submitProof(proof);
+      await connectivityContract.submitProof(proof, publicInputs);
 
       // once we submit a proof we can check the state of the contract to ensure it's been written
       proofExists = await connectivityContract.isProofUsed(keccakProof);
@@ -139,8 +146,9 @@ describe("Connectivity Testing", async () => {
 
     // should go throw (not revert)
     try {
-      await connectivityContract.submitProof(proof);
-    } catch (err) {
+      await connectivityContract.submitProof(proof, publicInputs);
+    } catch (err: any) {
+      // sorry for the any 🤮
       expect(err.message).to.include("proof already used");
     }
   });

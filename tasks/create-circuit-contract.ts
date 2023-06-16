@@ -46,11 +46,20 @@ const generateCircuit = async (taskArgs: any, hre: any) => {
   const fileContents = fs.readFileSync(newPath, "utf8");
 
   // in keeping with my solidity naming convention, we need to make sure the contracts first letter is capitalised
-
-  const newFileContents = fileContents.replace(
-    "contract UltraVerifier is ",
-    `contract ${capitalisedCircuitName}Verifier is `
-  );
+  // plus we need to update the verify function to not have the _proof param name (throws an unused param error)
+  const newFileContents = fileContents
+    .replace(
+      "contract UltraVerifier is ",
+      `contract ${capitalisedCircuitName}Verifier is `
+    )
+    .replace(
+      "* @param _proof - The serialized proof",
+      "* bytes calldata - The serialized proof (this isn't named cause accessed with assembly)"
+    )
+    .replace(
+      "function verify(bytes calldata _proof, bytes32[] calldata _publicInputs) external view returns (bool) {",
+      "function verify(bytes calldata, bytes32[] calldata _publicInputs) external view returns (bool) {"
+    );
 
   fs.writeFileSync(newPath, newFileContents, "utf8");
 

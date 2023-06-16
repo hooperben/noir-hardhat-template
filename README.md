@@ -130,8 +130,16 @@ Once you've tested and evaluated your circuit - you can run:
 
 ```bash
 npx hardhat create-circuit-contract --circuit myCircuit
-forge test
+
+# to test your circuit in foundry
+forge test --ffi
+
+# or
+
+yarn foundry
 ```
+
+The current way to generate proofs in foundry is just an abstracted bash script that runs a CLI script to generate a proof for your circuit. My bashing isn't the best, so this may be prone to a few irregularities at first.
 
 ## Issues/Feature Requests
 

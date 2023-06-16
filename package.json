@@ -46,6 +46,9 @@
   "engines": {
     "node": ">=10.6.0"
   },
+  "scripts": {
+    "foundry": "forge test --ffi"
+  },
   "dependencies": {
     "@noir-lang/aztec_backend": "0.11.0",
     "@noir-lang/barretenberg": "2.19.0",
