@@ -21,7 +21,7 @@ const generateCircuit = async (taskArgs: any, hre: any) => {
   if (!fs.existsSync(circuitsDir))
     throw new Error("Somethings gone wrong with the directory");
 
-  const codegenVerifierCommand = `cd ${circuitsDir} && nargo codegen-verifier`;
+  const codegenVerifierCommand = `cd ${circuitsDir} && nargo compile ${circuit} && nargo codegen-verifier`;
 
   execSync(codegenVerifierCommand);
 
@@ -48,8 +48,8 @@ const generateCircuit = async (taskArgs: any, hre: any) => {
   // in keeping with my solidity naming convention, we need to make sure the contracts first letter is capitalised
 
   const newFileContents = fileContents.replace(
-    "contract TurboVerifier {",
-    `contract ${capitalisedCircuitName}Verifier { `
+    "contract UltraVerifier is ",
+    `contract ${capitalisedCircuitName}Verifier is `
   );
 
   fs.writeFileSync(newPath, newFileContents, "utf8");

@@ -1,3 +1,6 @@
 #!/bin/sh
-cd circuits
-nargo prove test
+
+circuitsDir="circuits/$1"
+
+cd "$circuitsDir"
+nargo prove "$1" 

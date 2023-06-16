@@ -1,17 +1,26 @@
-pragma solidity 0.8.17;
+pragma solidity ^0.8.13;
 
-import {TestBase} from "forge-std/Base.sol";
-import {console2 as console} from "forge-std/console2.sol";
+// import {TestBase} from "forge-std/Base.sol";
+import "forge-std/Test.sol";
+import "forge-std/Vm.sol";
+
+import "forge-std/console.sol";
 
 // this contract is basically a copy of https://github.com/whitenois3/nplate/blob/main/test/utils/NoirHelper.sol
 // but written to fit this repository
-contract NoirHelper is TestBase {
+contract NoirHelper is Test {
   struct CircuitInput {
-    uint256 value;
     string name;
+    uint256 value;
   }
 
   CircuitInput[] public inputs;
+  string public circuitName;
+
+  /// @param _circuitName the path to the circuit folder
+  constructor(string memory _circuitName) {
+    circuitName = _circuitName;
+  }
 
   /**
    * Appends an input to the array
@@ -40,7 +49,7 @@ contract NoirHelper is TestBase {
    */
   function readProof(string memory fileName) public returns (bytes memory) {
     string memory file = vm.readFile(
-      string.concat("circuits/proofs/", fileName, ".proof")
+      string.concat("circuits/", circuitName, "/", fileName, ".proof")
     );
     return vm.parseBytes(file);
   }
@@ -58,7 +67,12 @@ contract NoirHelper is TestBase {
   function generateProof() public returns (bytes memory) {
     require(inputs.length > 0, "No inputs provided");
     // write to Prover.toml
-    string memory proverTOML = "../../../circuits/Prover.toml";
+    string memory proverTOML = string.concat(
+      "circuits/",
+      circuitName,
+      "/",
+      "Prover.toml"
+    );
     vm.writeFile(proverTOML, "");
 
     // write all inputs with their values
@@ -70,15 +84,19 @@ contract NoirHelper is TestBase {
     }
 
     // generate proof - this runs the
-    string[] memory ffi_cmds = new string[](1);
-    ffi_cmds[0] = "../../../prove.sh";
+    string[] memory ffi_cmds = new string[](2);
+    ffi_cmds[0] = "script/bash/prove.sh";
+    ffi_cmds[1] = circuitName;
+
     vm.ffi(ffi_cmds);
 
     // clean inputs (wipe state)
     clean();
 
     // read output of proof and return it
-    string memory proof = vm.readFile("../../../circuits/proofs/test.proof");
+    string memory proof = vm.readFile(
+      string.concat("circuits/", circuitName, "/proofs/", circuitName, ".proof")
+    );
     return vm.parseBytes(proof);
   }
 }

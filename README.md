@@ -126,7 +126,12 @@ This will create a `plonk_vk.sol` file at `circuits/myCircuit/contracts/` which 
 
 Once you've got your verifier contract - you can use it to verify and test your proof contract in foundry.
 
-TODO: WRITE INSTRUCTIONS ON HOW TO EXECUTE FOUNDRY TESTS
+Once you've tested and evaluated your circuit - you can run:
+
+```bash
+npx hardhat create-circuit-contract --circuit myCircuit
+forge test
+```
 
 ## Issues/Feature Requests
 
