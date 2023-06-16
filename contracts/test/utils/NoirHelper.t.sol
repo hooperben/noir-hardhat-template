@@ -1,6 +1,5 @@
 pragma solidity ^0.8.13;
 
-// import {TestBase} from "forge-std/Base.sol";
 import "forge-std/Test.sol";
 import "forge-std/Vm.sol";
 
@@ -83,20 +82,37 @@ contract NoirHelper is Test {
       );
     }
 
-    // generate proof - this runs the
-    string[] memory ffi_cmds = new string[](2);
-    ffi_cmds[0] = "script/bash/prove.sh";
-    ffi_cmds[1] = circuitName;
+    // the path of the proof output
+    string memory proofOutput = string.concat(
+      "circuits/",
+      circuitName,
+      "/proofs/",
+      circuitName,
+      ".proof"
+    );
 
-    vm.ffi(ffi_cmds);
+    // delete the previously generated proof
+    string[] memory ffi_delete_old_proof_cmd = new string[](2);
+    ffi_delete_old_proof_cmd[0] = "rm";
+    ffi_delete_old_proof_cmd[1] = proofOutput;
+
+    // generate proof - this runs the prove.sh command
+    string[] memory ffi_prove_cmd = new string[](2);
+    ffi_prove_cmd[0] = "script/bash/prove.sh";
+    ffi_prove_cmd[1] = circuitName;
+
+    // run the script
+    vm.ffi(ffi_prove_cmd);
 
     // clean inputs (wipe state)
     clean();
 
     // read output of proof and return it
-    string memory proof = vm.readFile(
-      string.concat("circuits/", circuitName, "/proofs/", circuitName, ".proof")
-    );
-    return vm.parseBytes(proof);
+    try vm.readFile(proofOutput) returns (string memory proof) {
+      // string memory proof = vm.readFile(proofOutput);
+      return vm.parseBytes(proof);
+    } catch {
+      revert("not today, bozo");
+    }
   }
 }

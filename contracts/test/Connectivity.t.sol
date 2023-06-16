@@ -43,6 +43,7 @@ contract ConnectivityTest is Test {
     return output;
   }
 
+  // evaluate valid proof with our verifier contract
   function testValidProof() public {
     // load up inputs
     // 7 + 8 == 15 - this is a valid input
@@ -56,5 +57,15 @@ contract ConnectivityTest is Test {
     connectivity.submitProof(proof, convertToBytes32Array(inputs));
 
     assertEq(connectivity.isProofUsed(keccak256(proof)), true);
+  }
+
+  // an invalid proof will revert
+  function testInvalidProof() public {
+    // 7 + 9 != 15 - this is a valid input
+    noirhelper.withInput("x", 7).withInput("y", 9);
+
+    // our expected error message
+    vm.expectRevert("not today, bozo");
+    noirhelper.generateProof(); // this will revert with the above
   }
 }

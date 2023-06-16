@@ -141,6 +141,10 @@ yarn foundry
 
 The current way to generate proofs in foundry is just an abstracted bash script that runs a CLI script to generate a proof for your circuit. My bashing isn't the best, so this may be prone to a few irregularities at first.
 
+## General House Keeping
+
+- all .proof and ACIR files are gitignored by default - you can change this if you want to keep them in your repo.
+
 ## Issues/Feature Requests
 
 Any issues or features you'd like, hit [me](https://github.com/hooperben) up, otherwise, happy hacking :)

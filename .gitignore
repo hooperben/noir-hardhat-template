@@ -11,3 +11,7 @@ cache_hardhat
 #Hardhat files
 cache
 artifacts
+
+# noir files
+circuits/**/proofs/*
+circuits/**/target/*
