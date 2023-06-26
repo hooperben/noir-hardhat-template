@@ -15,3 +15,5 @@ artifacts
 # noir files
 circuits/**/proofs/*
 circuits/**/target/*
+
+circuits/tmp/*

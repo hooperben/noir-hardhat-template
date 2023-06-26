@@ -30,17 +30,14 @@ contract ConnectivityTest is Test {
     connectivity = new Connectivity(address(verifier));
   }
 
-  // helper function to convert uint256[] to bytes32[]
-  function convertToBytes32Array(
-    uint256[] memory input
-  ) public pure returns (bytes32[] memory) {
-    bytes32[] memory output = new bytes32[](input.length);
+  // an invalid proof will revert
+  function testInvalidProof() public {
+    // 7 + 9 != 15 - this is an invalid input
+    noirhelper.withInput("x", 7).withInput("y", 9);
 
-    for (uint i = 0; i < input.length; i++) {
-      output[i] = bytes32(input[i]);
-    }
-
-    return output;
+    // we expect the following tx to revert
+    vm.expectRevert();
+    noirhelper.generateProof(); // this will revert with the above input parameters
   }
 
   // evaluate valid proof with our verifier contract
@@ -50,22 +47,15 @@ contract ConnectivityTest is Test {
     noirhelper.withInput("x", 7).withInput("y", 8);
     bytes memory proof = noirhelper.generateProof();
 
+    // as part of the new ultra verifier, we need to pass in public inputs
+    // to the proof verification function as bytes32
     uint256[] memory inputs = new uint256[](1);
     inputs[0] = 8;
 
     // submit the proof to our contract (this tx won't revert)
-    connectivity.submitProof(proof, convertToBytes32Array(inputs));
+    connectivity.submitProof(proof, noirhelper.convertToBytes32Array(inputs));
 
+    // check that the (hash) of the proof is marked as been used
     assertEq(connectivity.isProofUsed(keccak256(proof)), true);
-  }
-
-  // an invalid proof will revert
-  function testInvalidProof() public {
-    // 7 + 9 != 15 - this is a valid input
-    noirhelper.withInput("x", 7).withInput("y", 9);
-
-    // our expected error message
-    vm.expectRevert("not today, bozo");
-    noirhelper.generateProof(); // this will revert with the above
   }
 }
