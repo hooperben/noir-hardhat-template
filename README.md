@@ -1,4 +1,4 @@
-# Hardhat Noir Template Repository
+# Hardhat Noir Template Repository (with Foundry Support)
 
 A hardhat template repository for developing noir (zk) circuits.
 
@@ -12,6 +12,7 @@ You'll need:
 
 - Noir (nargo CLI - Installation steps can be found [here](https://noir-lang.org/getting_started/nargo/nargo_installation)).
 - Node Package Manager (npm, yarn, pnpm, etc. - whatever suits - so long as you can run `hardhat` on your CLI).
+- _Optional_ Foundry (Forge CLI) - Installation steps can be found [here](https://getfoundry.sh/)
 
 Once you've cloned the repo, run:
 
@@ -121,6 +122,30 @@ nargo codegen-verifier
 
 This will create a `plonk_vk.sol` file at `circuits/myCircuit/contracts/` which you can then use in your hardhat project.
 
-### Issues/Feature Requests
+## Working in Foundry
+
+Once you've got your verifier contract - you can use it to verify and test your proof contract in foundry.
+
+Once you've tested and evaluated your circuit - you can run:
+
+```bash
+# get a verifier contract to interact with in foundry tests
+npx hardhat create-circuit-contract --circuit myCircuit
+
+# and then to test your circuit in foundry (-ffi flag is to allow for nargo to be ran by foundry)
+forge test --ffi
+
+# or
+
+yarn foundry
+```
+
+The current way to generate proofs in foundry is just an abstracted bash script that runs a CLI script to generate a proof for your circuit. My bashing isn't the best, so this may be prone to a few irregularities at first.
+
+## General House Keeping
+
+- all .proof and ACIR files are gitignored by default - you can change this if you want to keep them in your repo.
+
+## Issues/Feature Requests
 
 Any issues or features you'd like, hit [me](https://github.com/hooperben) up, otherwise, happy hacking :)

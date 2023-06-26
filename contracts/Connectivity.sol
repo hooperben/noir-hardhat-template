@@ -19,9 +19,12 @@ contract Connectivity {
   }
 
   // the submitProof function takes a proof and verifies it using our deployed verifier contract
-  function submitProof(bytes calldata _proof) public {
+  function submitProof(
+    bytes calldata _proof,
+    bytes32[] calldata _publicInputs
+  ) public {
     // verify the proof - if invalid, the transaction will revert
-    require(verifier.verify(_proof), "Proof is invalid");
+    require(verifier.verify(_proof, _publicInputs), "Proof is invalid");
 
     // hash the proof and store it
     bytes32 proofHash = keccak256(_proof);

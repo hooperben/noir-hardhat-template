@@ -4,6 +4,16 @@ coverage
 coverage.json
 typechain
 
+#foundry files
+foundry-out
+cache_hardhat
+
 #Hardhat files
 cache
 artifacts
+
+# noir files
+circuits/**/proofs/*
+circuits/**/target/*
+
+circuits/tmp/*
