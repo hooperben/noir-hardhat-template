@@ -129,9 +129,10 @@ Once you've got your verifier contract - you can use it to verify and test your 
 Once you've tested and evaluated your circuit - you can run:
 
 ```bash
+# get a verifier contract to interact with in foundry tests
 npx hardhat create-circuit-contract --circuit myCircuit
 
-# to test your circuit in foundry
+# and then to test your circuit in foundry (-ffi flag is to allow for nargo to be ran by foundry)
 forge test --ffi
 
 # or
