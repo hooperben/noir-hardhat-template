@@ -1,4 +1,4 @@
-# 🚨 ** DEPRECATED - USE VERSION 2 ** 🚨  
+# 🚨 DEPRECATED - USE VERSION 2 🚨  
 
 ### available here: https://github.com/hooperben/noir-hardhat-template-v2
 
