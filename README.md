@@ -1,3 +1,7 @@
+# 🚨 ** DEPRECATED - USE VERSION 2 ** 🚨  
+
+### available here: https://github.com/hooperben/noir-hardhat-template-v2
+
 # Hardhat Noir Template Repository (with Foundry Support)
 
 A hardhat template repository for developing noir (zk) circuits.
